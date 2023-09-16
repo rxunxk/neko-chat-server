@@ -4,6 +4,4 @@ const routes = express.Router();
 
 routes.get("/", userController.getUsers);
 
-module.exports = {
-  routes,
-};
+exports.routes = routes;

@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, requiored: true },
+    email: { type: String, requiored: true, unique: true },
     password: { type: String, required: true },
-    profilePic: {
+    pic: {
       type: String,
       default:
         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
@@ -14,4 +14,4 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+exports.User = mongoose.model("User", userSchema);

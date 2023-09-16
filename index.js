@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const helment = require("helmet");
 const userRoutes = require("./routes/user");
-const authRoutes = require("./routes/auth");
+const authRouter = require("./routes/auth");
 
 dotenv.config();
 const server = express();
@@ -26,7 +26,7 @@ server.use(express.json());
 server.use(morgan("default"));
 server.use(helment());
 server.use("/api/users", userRoutes.routes);
-server.use("/api/auth", authRoutes.routes);
+server.use("/api/auth", authRouter.routes);
 
 //Server
 server.listen(process.env.PORT, () => {
