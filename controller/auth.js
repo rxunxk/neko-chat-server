@@ -17,12 +17,14 @@ const createUser = async (req, res) => {
     const existingUser = await User.findOne({
       email: email,
     });
-    existingUser &&
-      res
+
+    if (existingUser) {
+      return res
         .status(401)
         .send(
           "A User already exists with this email address. Please try again with a different email Id."
         );
+    }
 
     //generating hashed password
     const salt = await bcrypt.genSalt(10);
@@ -56,11 +58,15 @@ const login = async (req, res) => {
     const user = await User.findOne({
       email: email,
     });
-    !user && res.status(401).send("User not found");
 
+    if (!user) {
+      return res.status(401).send("User not found");
+    }
     //validating password
     const validPassword = await bcrypt.compare(password, user.password);
-    !validPassword && res.status(401).send("wrong password");
+    if (!validPassword) {
+      return res.status(401).send("wrong password");
+    }
 
     res.status(200).json({ ...user._doc, token: generateToken(user._doc._id) });
   } catch (err) {
