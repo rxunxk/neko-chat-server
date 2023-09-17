@@ -13,6 +13,17 @@ const createUser = async (req, res) => {
       res.status(400).json("Please enter all the fields");
     }
 
+    //Unique email check
+    const existingUser = await User.findOne({
+      email: email,
+    });
+    existingUser &&
+      res
+        .status(401)
+        .send(
+          "A User already exists with this email address. Please try again with a different email Id."
+        );
+
     //generating hashed password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -38,7 +49,24 @@ const createUser = async (req, res) => {
 };
 
 //Login - POST
-const login = async (req, res) => {};
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    //validating user
+    const user = await User.findOne({
+      email: email,
+    });
+    !user && res.status(401).send("User not found");
+
+    //validating password
+    const validPassword = await bcrypt.compare(password, user.password);
+    !validPassword && res.status(401).send("wrong password");
+
+    res.status(200).json({ ...user._doc, token: generateToken(user._doc._id) });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 exports.createUser = createUser;
 exports.login = login;
