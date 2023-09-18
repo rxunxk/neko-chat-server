@@ -1,13 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const chats = require("./data/data");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const helment = require("helmet");
 const userRoutes = require("./routes/user");
 const authRouter = require("./routes/auth");
-
+const chatRouter = require("./routes/chat");
 dotenv.config();
 const server = express();
 
@@ -27,7 +26,7 @@ server.use(morgan("default"));
 server.use(helment());
 server.use("/api/users", userRoutes.routes);
 server.use("/api/auth", authRouter.routes);
-
+server.use("/api/chats", chatRouter.routes);
 //Server
 server.listen(process.env.PORT, () => {
   console.log("server started");
