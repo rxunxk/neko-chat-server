@@ -10,6 +10,7 @@ routes
   .post("/gc", protect, chatController.createGC)
   .patch("/gc/rename", protect, chatController.renameGC)
   .patch("/gc/add", protect, chatController.addToGC)
-  .patch("/gc/remove", protect, chatController.removeFromGC);
+  .patch("/gc/remove", protect, chatController.removeFromGC)
+  .delete("/delete", protect, chatController.deleteChat);
 
 exports.routes = routes;

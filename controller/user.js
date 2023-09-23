@@ -13,16 +13,13 @@ const getUsers = async (req, res) => {
 
 // /api/user/search?search=raunak
 const searchUsers = expressAsyncHandler(async (req, res) => {
-  const keyword = req.query.search
-    ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
-    : {};
-
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  const keyword = req.query.search;
+  const users = await User.find({
+    $or: [
+      { name: { $regex: new RegExp(keyword, "i") } }, // 'i' flag for case-insensitive search
+      { email: { $regex: new RegExp(keyword, "i") } },
+    ],
+  }).find({ _id: { $ne: req.user._id } });
   res.status(200).send(users);
 });
 

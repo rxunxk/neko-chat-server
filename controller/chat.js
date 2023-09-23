@@ -206,6 +206,17 @@ const removeFromGC = async (req, res) => {
   }
 };
 
+//Delete Chat
+const deleteChat = async (req, res) => {
+  let chatId = req.body.chatId;
+  try {
+    const deletedChat = await Chat.findOneAndDelete({ _id: chatId });
+    res.status(200).send(deletedChat);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+};
+
 exports.getUsersChats = getUsersChats;
 exports.openChat = openChat;
 exports.createGC = createGC;
@@ -213,3 +224,4 @@ exports.renameGC = renameGC;
 exports.addToGC = addToGC;
 exports.removeFromGC = removeFromGC;
 exports.getAllChats = getAllChats;
+exports.deleteChat = deleteChat;
