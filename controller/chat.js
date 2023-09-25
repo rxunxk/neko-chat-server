@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const Chat = require("../model/chat");
-// const Chat = model.Chat;
 const User = require("../model/user").User;
 
 //getting All Chats form the backend
