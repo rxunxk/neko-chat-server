@@ -19,6 +19,26 @@ const getAllChats = async (req, res) => {
   }
 };
 
+//getting a single chat
+const getChat = async (req, res) => {
+  try {
+    await Chat.find({ _id: req.params.id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password")
+      .populate("latestMessage")
+      .then(async (results) => {
+        results = await User.populate(results, {
+          path: "latestMessage.sender",
+          select: "name pic email",
+        });
+
+        res.status(200).send(results);
+      });
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+};
+
 //Getting a user's chat
 const getUsersChats = async (req, res) => {
   try {
@@ -225,3 +245,4 @@ exports.addToGC = addToGC;
 exports.removeFromGC = removeFromGC;
 exports.getAllChats = getAllChats;
 exports.deleteChat = deleteChat;
+exports.getChat = getChat;
