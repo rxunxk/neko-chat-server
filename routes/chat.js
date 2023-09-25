@@ -5,8 +5,8 @@ const routes = express.Router();
 
 routes
   .get("/", protect, chatController.getAllChats)
-  .get("/:id", protect, chatController.getChat)
   .get("/users", protect, chatController.getUsersChats)
+  .get("/:id", protect, chatController.getChat)
   .post("/", protect, chatController.openChat)
   .post("/gc", protect, chatController.createGC)
   .patch("/gc/rename", protect, chatController.renameGC)
