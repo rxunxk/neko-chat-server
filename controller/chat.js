@@ -40,7 +40,6 @@ const getChat = async (req, res) => {
 
 //Getting a user's chat
 const getUsersChats = async (req, res) => {
-  console.log(req);
   try {
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")

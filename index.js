@@ -23,13 +23,44 @@ dbCon().catch((err) => {
 //Middlewares
 server.use(cors());
 server.use(express.json());
-server.use(morgan("default"));
+// server.use(morgan("default"));
 server.use(helment());
 server.use("/api/users", userRoutes.routes);
 server.use("/api/auth", authRouter.routes);
 server.use("/api/chats", chatRouter.routes);
 server.use("/api/message", messageRouter.routes);
+
 //Server
-server.listen(process.env.PORT, () => {
+const socketSrv = server.listen(process.env.PORT, () => {
   console.log("server started");
+});
+
+const io = require("socket.io")(socketSrv, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("connected to socket.io");
+
+  socket.on("setup", (userData) => {
+    socket.join(userData._id);
+    socket.emit("connected");
+  });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+  });
+
+  socket.on("new message", (newMessageReceived) => {
+    let chat = newMessageReceived.chat;
+    if (!chat.users) return console.log("chat.users not defined");
+    chat.users.forEach((user) => {
+      if (user._id == newMessageReceived.sender._id) return;
+
+      socket.in(user._id).emit("message received", newMessageReceived);
+    });
+  });
 });
