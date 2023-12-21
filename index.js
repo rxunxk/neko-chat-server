@@ -29,6 +29,9 @@ server.use("/api/users", userRoutes.routes);
 server.use("/api/auth", authRouter.routes);
 server.use("/api/chats", chatRouter.routes);
 server.use("/api/message", messageRouter.routes);
+server.use("/", (req, res) => {
+  res.send("Welcome to the server");
+});
 
 //Server
 const socketSrv = server.listen(process.env.PORT, () => {
@@ -43,8 +46,6 @@ const io = require("socket.io")(socketSrv, {
 });
 
 io.on("connection", (socket) => {
-  console.log("connected to socket.io");
-
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");
