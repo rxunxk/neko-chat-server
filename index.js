@@ -41,7 +41,7 @@ const socketSrv = server.listen(process.env.PORT, () => {
 const io = require("socket.io")(socketSrv, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://neko-chat.vercel.app",
   },
 });
 
