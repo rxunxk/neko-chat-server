@@ -1,0 +1,35 @@
+{
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/*",
+      "dest": "index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "index.js"
+    },
+    {
+      "src": "/api/auth/(.*)",
+      "dest": "index.js"
+    },
+    {
+      "src": "/api/users/(.*)",
+      "dest": "index.js"
+    },
+    {
+      "src": "/api/chats/(.*)",
+      "dest": "index.js"
+    },
+    {
+      "src": "/api/message/(.*)",
+      "dest": "index.js"
+    },
+    { "src": "/[^.]+", "dest": "/", "status": 200 }
+  ]
+}
